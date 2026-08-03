@@ -1,7 +1,7 @@
 # Read-And-Write-CSV-Files-in-Python
 This is to practice read and write csv files in python. It is an order tracking system. I will implement SQL later
 
-#CSV File Info
+# CSV-File-Info
 Enter CSV file content must be in the following format for program to run:
 For Customer:
 customer_id (int), name (str), address (str)
