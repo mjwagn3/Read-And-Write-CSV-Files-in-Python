@@ -1,0 +1,186 @@
+@startuml
+class ID_Tracker{
+ -{static}customer_ids: list[int]
+ -{static}employee_ids: list[int]
+ -{static}product_ids: list[int]
+ -{static}order_ids: list[int]
+ 
+ -{static}max_e_id:int
+ -{static}max_p_id:int
+ -{static}max_c_id:int
+ -{static}max_o_id:int 
+ 
+ -{static}min_e_id:int
+ -{static}min_p_id:int
+ -{static}min_c_id:int
+ -{static}min_o_id:int
+
+ -{static}has_set_e_range: bool
+ -{static}has_set_p_range: bool
+ -{static}has_set_c_range: bool
+ -{static}has_set_o_range: bool
+
+ +{static}set_c_range(c_min:int, c_max:int): bool
+ +{static}set_p_range(p_min:int, p_max:int): bool
+ +{static}set_e_range(e_min:int, e_max:int): bool
+ +{static}set_o_range(o_min:int, o_max:int): bool
+
+ +{static}load_customer_id(c_id:int): bool
+ +{static}load_employee_id(e_id:int): bool
+ +{static}load_product_id(p_id:int): bool
+ +{static}load_order_id(o_id:int): bool
+ 
+ -{static}gen_int(min:int,max:int): int
+ 
+ +{static}gen_e_id():int
+ +{static}gen_p_id():int
+ +{static}gen_c_id():int
+ +{static}gen_o_id():int
+
+ +{static}get_num_c_gen():int
+ +{static}get_num_p_gen():int
+ +{static}get_num_e_gen():int
+ +{static}get_num_o_gen():int
+}
+
+class Customer {
+ -c_id:int
+ -c_name:str
+ -c_address:str
+ +Customer(c_id:int,c_name:str,c_address:str)
+ +get_id():int
+ +get_name():str
+ +get_address():str
+}
+
+class Product {
+ -p_id:int
+ -p_name:str
+ -p_price:float
+ -p_quantity:int
+ +Product(p_id:int,p_name:str,p_price:float,p_quantity:int)
+ +get_id():int
+ +get_name():str
+ +get_price():float
+ +get_quantity():int
+ +set_price(new_p_price:float):bool
+ +set_quantity(new_p_quantity:int):bool
+}
+
+class Employee{
+ -e_id:int
+ -e_name:str
+ -e_position:str
+ -e_years_of_exp:float
+ +Employee(e_id:int,e_name:str,e_position:str,e_years_of_exp:float)
+ +get_id():int
+ +get_name():str
+ +get_position():str
+ +get_years_of_exp():float
+ +set_position(new_e_position:str):bool
+ +set_years_of_exp(new_e_year_of_exp:float):bool
+}
+
+class Order{
+ -o_id:int
+ -c_id:int
+ -e_id:int
+ -p_id:int
+ -o_quantity:int
+ -o_price:float
+ -o_value:float
+ +Order(o_id:int,c_id:int,e_id:int,p_id:int,o_quantity:int,o_price:float)
+ +get_o_id():int
+ +get_c_id():int
+ +get_e_id():int
+ +get_p_id():int
+ +get_o_quantity():int
+ +get_o_price():float
+ +get_o_value():float
+}
+
+class Customer_Pool{
+ -{static}has_set:bool
+ -{static}customers: list[Customer]
+ -{static}add_customer(new_customer:Customer):bool
+ +{static}load_customer(c_id:int,c_name:str,c_address:str):bool
+ +{static}new_customer(created_customer:Customer):bool
+ +{static}get_customer(c_id:int):Customer
+ +{static}to_csv():str
+ +{static}to_display():str
+}
+Customer_Pool "1" *-- "0..*" Customer : contains >
+
+class Order_Pool{
+ -{static}has_set:bool
+ -{static}orders: list[Order]
+ -{static}add_order(new_order:Order):bool
+ +{static}load_order(o_id:int,c_id:int,e_id:int,p_id:int,o_quantity:int,o_price:float):bool
+ +{static}new_order(created_order:Order):bool
+ +{static}get_order(o_id:int): Order
+ +{static}to_csv():str
+ +{static}to_display():str 
+}
+Order_Pool "1" *-- "0..*" Order : contains >
+
+class Product_Pool{
+ -{static}has_set:bool
+ -{static}products:list[Product]
+ -{static}add_product(new_product:Product):bool
+ +{static}load_product(p_id:int,p_name:str,p_price:float,p_quantity):bool
+ +{static}new_product(new_product:Product):bool
+ +{static}get_product(p_id:int):Product
+ +{static}to_csv():str
+ +{static}to_display():str
+}
+Product_Pool "1" *-- "0..*" Product : contains >
+
+class Employee_Pool{
+ -{static}has_set:bool
+ -{static}employees:list[Employee]
+ -{static}add_employee(new_employee:Employee):bool
+ +{static}load_employee(e_id:int,e_name:str,e_position:str,e_years_of_exp:float):bool
+ +{static}new_employee(created_employee:Employee):bool
+ +{static}to_csv():str
+ +{static}to_display():str
+}
+Employee_Pool "1" *-- "0..*" Employee : contains >
+
+class My_Util{
+ +{static}to_csv_employees():str
+ +{static}to_csv_products():str
+ +{static}to_csv_orders():str
+ +{static}to_csv_customers():str
+ +{static}load_employees(data:list,is_type:bool):bool
+ +{static}load_products(data:list,is_type:bool):bool
+ +{static}load_orders(data:list,is_type:bool):bool
+ +{static}load_customers(data:list,is_type:bool):bool
+ +{static}create_employee():bool
+ +{static}create_customer():bool
+ +{static}create_order():bool
+ +{static}create_product():bool
+ +{static}input_int(prompt:str,ran:int,is_range:bool):int
+ +{static}input_float(prompt:str,ran:float,is_range:bool):float
+ +{static}input_str(prompt:str,options:list[str],is_range:bool):str
+ +{static}start_up():bool
+ +{static}save_all():bool
+}
+
+class My_File_Editor{
+ -{static}files:list
+ +{static}set_file(file_name:str,file_index:int):bool
+ +{static}get_file(file_index:int):File
+}
+
+Customer "1" -- "0..*" Order : places >
+Employee "1" -- "0..*" Order : processes >
+Product  "1" -- "0..*" Order : included_in >
+
+My_Util ..> Customer_Pool : uses >
+My_Util ..> Product_Pool : uses >
+My_Util ..> Employee_Pool : uses >
+My_Util ..> Order_Pool : uses >
+My_Util ..> ID_Tracker : uses >
+My_Util ..> My_File_Editor : uses >
+
+@enduml
